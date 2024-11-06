@@ -72,13 +72,25 @@ class Window(QMainWindow):
         # Buttons
         button_layout = QHBoxLayout()
         clear_button = PushButton(labels['CLEAR_BUTTON'], self.__clear_inputs)
-        submit_button = PushButton(labels['SUBMIT_BUTTON'])
+        submit_button = PushButton(labels['SUBMIT_BUTTON'], self.__submit)
         submit_button.setObjectName('Submit')
         button_layout.addWidget(submit_button)
         button_layout.addWidget(clear_button)
         main_layout.addLayout(button_layout)
 
         central_widget.setLayout(main_layout)
+
+    def __submit(self):
+        if not self.energy_first_input.text() or \
+                not self.energy_second_input.text() or \
+                not self.energy_third_input.text() or \
+                not self.waste_first_input.text() or \
+                not self.waste_second_input.text() or \
+                not self.travel_first_input.text() or \
+                not self.travel_second_input.text():
+            raise ValueError(labels['EMPTY_INPUT_TITLE'], labels['EMPTY_INPUT_TEXT'])
+        else:
+            pass
 
     def __clear_inputs(self):
         self.energy_first_input.clear()

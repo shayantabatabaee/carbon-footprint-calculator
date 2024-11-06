@@ -10,6 +10,8 @@ labels = {
     'BUSINESS_TRAVEL_TITLE': 'Business Travel',
     'BUSINESS_TRAVEL_QUESTION_1': 'How many kilometers do your employees travel per year for business purposes? ',
     'BUSINESS_TRAVEL_QUESTION_2': 'What is the average fuel efficiency of the vehicles used for business travel in liters per 100 kilometers?',
-    'CLEAR_BUTTON': "Clear",
-    'SUBMIT_BUTTON': "Submit"
+    'CLEAR_BUTTON': 'Clear',
+    'SUBMIT_BUTTON': 'Submit',
+    'EMPTY_INPUT_TITLE': 'Empty Input',
+    'EMPTY_INPUT_TEXT': 'Input should not be empty, make sure the input is correct!',
 }
