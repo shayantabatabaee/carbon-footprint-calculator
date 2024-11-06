@@ -1,0 +1,7 @@
+QPushButton {
+    height: 30px;
+}
+
+QPushButton#Submit {
+    background-color: dodgerblue;
+}
