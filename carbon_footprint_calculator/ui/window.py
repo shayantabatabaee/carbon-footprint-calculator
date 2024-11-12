@@ -5,6 +5,10 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QFrame, QLabel, QHBoxLayout, QLineEdit
 
 from carbon_footprint_calculator.assets.strings import labels
+from carbon_footprint_calculator.helpers.carbon_footprint import CarbonFootprint
+from carbon_footprint_calculator.models.business_travel import BusinessTravel
+from carbon_footprint_calculator.models.energy_usage import EnergyUsage
+from carbon_footprint_calculator.models.waste import Waste
 from carbon_footprint_calculator.ui.push_button import PushButton
 from carbon_footprint_calculator.ui.widget import Widget
 
@@ -90,7 +94,15 @@ class Window(QMainWindow):
                 not self.travel_second_input.text():
             raise ValueError(labels['EMPTY_INPUT_TITLE'], labels['EMPTY_INPUT_TEXT'])
         else:
-            pass
+            # Calculate carbon foot print
+            energy_usage_dto = EnergyUsage(monthly_electricity_bill=self.energy_first_input.text(),
+                                           monthly_natural_gas_bill=self.energy_second_input.text(),
+                                           monthly_fuel_bill=self.energy_third_input.text())
+            waste_dto = Waste(total_waste_generated_monthly=self.waste_first_input.text(),
+                              recycling_percentage=self.waste_second_input.text())
+            business_travel_dto = BusinessTravel(total_kilometers_traveled_yearly=self.travel_first_input.text(),
+                                                 average_fuel_efficiency=self.travel_second_input.text())
+            CarbonFootprint.generate_report(energy_usage_dto, waste_dto, business_travel_dto)
 
     def __clear_inputs(self):
         self.energy_first_input.clear()

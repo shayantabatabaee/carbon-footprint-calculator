@@ -14,4 +14,6 @@ labels = {
     'SUBMIT_BUTTON': 'Submit',
     'EMPTY_INPUT_TITLE': 'Empty Input',
     'EMPTY_INPUT_TEXT': 'Input should not be empty, make sure the input is correct!',
+    'UNKNOWN_ERROR': 'Unknown error',
+    'UNKNOWN_ERROR_TEXT': 'Unknown error occurred, please refer to log for further information!',
 }

@@ -13,7 +13,7 @@ class Calculator:
 
     @staticmethod
     def calculate_waste(waste: Waste):
-        return waste.total_waste_generated_monthly * 12 * (0.57 - waste.recycling_percentage)
+        return max(waste.total_waste_generated_monthly * 12 * (0.57 - waste.recycling_percentage / 100), 0)
 
     @staticmethod
     def calculate_business_travel(business_travel: BusinessTravel) -> float:
