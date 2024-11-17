@@ -1,6 +1,7 @@
 import json
 import logging
 
+from httpx import HTTPStatusError
 from pydantic_core._pydantic_core import ValidationError
 
 from carbon_footprint_calculator.assets import strings
@@ -18,6 +19,9 @@ class Handler:
             error_json = json.loads(exception_value.json())[0]
             text = error_json["loc"][0]
             informative_text = error_json["msg"]
+        elif exception_type is HTTPStatusError:
+            text = strings.labels['NETWORK_ERROR']
+            informative_text = str(exception_value)
         else:
             text = strings.labels['UNKNOWN_ERROR']
             informative_text = strings.labels['UNKNOWN_ERROR_TEXT']
