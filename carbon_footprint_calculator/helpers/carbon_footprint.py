@@ -1,5 +1,7 @@
 import logging
 
+from pubsub import pub
+
 from carbon_footprint_calculator.assets.constants import PLOT_PATH
 from carbon_footprint_calculator.assets.strings import labels
 from carbon_footprint_calculator.helpers.llm_interpreter import LLMInterpreter
@@ -26,8 +28,8 @@ class CarbonFootprint:
         plot_labels = labels['ENERGY_USAGE_TITLE'], labels['WASTE_TITLE'], labels['BUSINESS_TRAVEL_TITLE']
         colors = ['#dedce5', '#dfe6ee', '#dbc3cd']
         Plot.draw(plot_labels, [energy_usage, generated_waste, business_travel_usage], colors)
-        LLMInterpreter.report(energy_usage, generated_waste, business_travel_usage,
-                              callback=CarbonFootprint.__llm_report_ready)
+        pub.subscribe(CarbonFootprint.__llm_report_ready, LLMInterpreter.CHANNEL)
+        LLMInterpreter.report(energy_usage, generated_waste, business_travel_usage)
 
     @staticmethod
     def __llm_report_ready(llm_result: LLMResult):

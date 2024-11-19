@@ -1,19 +1,20 @@
 import asyncio
-from typing import Callable
 
 import httpx
+from pubsub import pub
 
 from carbon_footprint_calculator.assets import constants
 from carbon_footprint_calculator.models.llm_result import LLMResult
 
 
 class LLMInterpreter:
+    CHANNEL = "LLM_CHANNEL"
     __OPEN_ROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
     __API_KEY = constants.OPEN_ROUTER_API_KEY
     __TIMEOUT = 60  # In seconds
 
     @staticmethod
-    def report(energy_usage: float, generated_waste: float, business_travel_usage: float, callback: Callable = None):
+    def report(energy_usage: float, generated_waste: float, business_travel_usage: float):
         async def call():
             total_usage = energy_usage + generated_waste + business_travel_usage
             prompt = [
@@ -46,11 +47,18 @@ class LLMInterpreter:
                     response = await client.post(LLMInterpreter.__OPEN_ROUTER_URL, json=body, headers=headers)
                     response.raise_for_status()
                     data = response.json()
+                    if 'error' in data:
+                        raise httpx.HTTPStatusError(data['error']['message'],
+                                                    request=response.request,
+                                                    response=response)
                     result: LLMResult = LLMResult(is_successful=True, result=data, error=None)
                 except Exception as e:
                     result: LLMResult = LLMResult(is_successful=False, result=None, error=e)
 
-            if callback:
-                callback(result)
+                pub.sendMessage(LLMInterpreter.CHANNEL, llm_result=result)
 
-        asyncio.run(call())
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            asyncio.ensure_future(call())
+        else:
+            asyncio.run(call())
