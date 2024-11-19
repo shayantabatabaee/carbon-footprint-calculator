@@ -16,6 +16,9 @@ if __name__ == '__main__':
     window = Window()
     window.show()
 
+    sys.excepthook = Handler.handle
+    loop.set_exception_handler(Handler.loop_handler)
+
     try:
         with loop:
             loop.run_forever()
@@ -23,5 +26,4 @@ if __name__ == '__main__':
         loop.close()
 
 
-    sys.excepthook = Handler.handle
     sys.exit(loop.close())

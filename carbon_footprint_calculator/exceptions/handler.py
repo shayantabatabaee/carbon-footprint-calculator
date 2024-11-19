@@ -1,7 +1,7 @@
 import json
 import logging
 
-from httpx import HTTPStatusError
+from httpx import HTTPStatusError, ConnectError
 from pydantic_core._pydantic_core import ValidationError
 
 from carbon_footprint_calculator.assets import strings
@@ -22,9 +22,16 @@ class Handler:
         elif exception_type is HTTPStatusError:
             text = strings.labels['NETWORK_ERROR']
             informative_text = str(exception_value)
+        elif exception_type is ConnectError:
+            text = strings.labels['NETWORK_ERROR']
+            informative_text = str(exception_value)
         else:
             text = strings.labels['UNKNOWN_ERROR']
             informative_text = strings.labels['UNKNOWN_ERROR_TEXT']
 
         logging.error(exception_value)
         Message.critical(text, informative_text)
+
+    @staticmethod
+    def loop_handler(loop, context):
+        Handler.handle(type(context['exception']), context['exception'], None)
