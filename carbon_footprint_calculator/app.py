@@ -1,9 +1,12 @@
 import asyncio
 import logging
+import os
 import sys
 
 from PyQt6.QtWidgets import QApplication
 from qasync import QEventLoop
+
+sys.path.append(os.path.join(os.getcwd(), '..'))
 
 from carbon_footprint_calculator.exceptions.handler import Handler
 from carbon_footprint_calculator.ui.main_window import MainWindow
