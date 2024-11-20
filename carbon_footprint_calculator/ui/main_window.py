@@ -5,18 +5,19 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QFrame, QLabel, QHBoxLayout, QLineEdit, QStackedLayout
 from pubsub import pub
 
+from carbon_footprint_calculator.assets.constants import PDF_PATH
 from carbon_footprint_calculator.assets.strings import labels
 from carbon_footprint_calculator.helpers.carbon_footprint import CarbonFootprint
-from carbon_footprint_calculator.helpers.llm_interpreter import LLMInterpreter
 from carbon_footprint_calculator.models.business_travel import BusinessTravel
 from carbon_footprint_calculator.models.energy_usage import EnergyUsage
 from carbon_footprint_calculator.models.waste import Waste
 from carbon_footprint_calculator.ui.loading import Loading
+from carbon_footprint_calculator.ui.pdf_viewer_window import PDFViewerWindow
 from carbon_footprint_calculator.ui.push_button import PushButton
 from carbon_footprint_calculator.ui.widget import Widget
 
 
-class Window(QMainWindow):
+class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -35,7 +36,7 @@ class Window(QMainWindow):
         self.setCentralWidget(central_widget)
 
         self.loading_widget = Loading()
-
+        self.pdf_viewer = None
         self.main_layout = QStackedLayout()
 
         content_widget = QWidget()
@@ -94,7 +95,7 @@ class Window(QMainWindow):
         self.main_layout.addWidget(self.loading_widget)
 
         central_widget.setLayout(self.main_layout)
-        pub.subscribe(self.__hide_loading, LLMInterpreter.CHANNEL)
+        pub.subscribe(self.__hide_loading, CarbonFootprint.CHANNEL)
 
     def __submit(self):
         if not self.energy_first_input.text() or \
@@ -120,9 +121,12 @@ class Window(QMainWindow):
     def __show_loading(self):
         self.main_layout.setCurrentIndex(1)
 
-    def __hide_loading(self, llm_result):
+    def __hide_loading(self):
         self.__clear_inputs()
         self.main_layout.setCurrentIndex(0)
+        if os.path.exists(PDF_PATH):
+            self.pdf_viewer = PDFViewerWindow(PDF_PATH)
+            self.pdf_viewer.show()
 
     def __clear_inputs(self):
         self.energy_first_input.clear()

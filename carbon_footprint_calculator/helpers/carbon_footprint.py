@@ -15,6 +15,7 @@ from carbon_footprint_calculator.utils.calculator import Calculator
 
 
 class CarbonFootprint:
+    CHANNEL = "REPORT_READY_CHANNEL"
 
     @staticmethod
     def generate_report(energy_usage_dto: EnergyUsage, waste_dto: Waste, business_travel_dto: BusinessTravel):
@@ -42,3 +43,4 @@ class CarbonFootprint:
         content += 'The plot for carbon footprint is as follows:\n'
         content += f'![Pie Chart]({PLOT_PATH})'
         PDFGenerator.generate(content)
+        pub.sendMessage(CarbonFootprint.CHANNEL)

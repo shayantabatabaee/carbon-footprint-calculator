@@ -1,5 +1,6 @@
 labels = {
     'WINDOW_TITLE': 'Carbon Footprint Calculator',
+    'PDF_VIEWER_WINDOW_TITLE': 'PDF Report',
     'ENERGY_USAGE_TITLE': 'Energy Usage',
     'ENERGY_USAGE_QUESTION_1': 'What is your average monthly electricity bill in euros?',
     'ENERGY_USAGE_QUESTION_2': 'What is your average monthly natural gas bill in euros?',
