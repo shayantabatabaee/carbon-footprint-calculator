@@ -48,6 +48,18 @@ In this section you can find some screenshots related to this application.
 <img src="docs/Loading.png" alt="Example" width="300">
 <img src="docs/Report.png" alt="Example" width="453">
 
+## Test
+To have a better application, writing test is crucial. In python, it is common to use `pytest` for writing test to avoid unseen
+circumstances. There are different stages of test, which in this application `unit` and `integration` exist. To run the test 
+following these steps. Just beware of setting proper environment variables for connecting to external LLM.
+
+```bash
+# Install test requirements
+pip install -r requirements/requirements_test.txt
+# Run test with pytest
+pytest
+```
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).  
