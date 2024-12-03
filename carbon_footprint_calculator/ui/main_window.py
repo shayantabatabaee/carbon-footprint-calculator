@@ -1,11 +1,12 @@
 import os
+import shutil
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QFrame, QLabel, QHBoxLayout, QLineEdit, QStackedLayout
 from pubsub import pub
 
-from carbon_footprint_calculator.assets.constants import PDF_PATH
+from carbon_footprint_calculator.assets.constants import PDF_PATH, TEMP_PATH
 from carbon_footprint_calculator.assets.strings import labels
 from carbon_footprint_calculator.helpers.carbon_footprint import CarbonFootprint
 from carbon_footprint_calculator.models.business_travel import BusinessTravel
@@ -98,6 +99,7 @@ class MainWindow(QMainWindow):
         pub.subscribe(self.__hide_loading, CarbonFootprint.CHANNEL)
 
     def __submit(self):
+        shutil.rmtree(TEMP_PATH, ignore_errors=True)
         if not self.energy_first_input.text() or \
                 not self.energy_second_input.text() or \
                 not self.energy_third_input.text() or \

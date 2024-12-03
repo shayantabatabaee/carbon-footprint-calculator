@@ -35,6 +35,7 @@ class CarbonFootprint:
     @staticmethod
     def __llm_report_ready(llm_result: LLMResult):
         if not llm_result.is_successful:
+            pub.sendMessage(CarbonFootprint.CHANNEL)
             raise llm_result.error
         content = llm_result.result['choices'][0]['message']['content']
         content += '\n\n'
