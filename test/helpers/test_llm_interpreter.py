@@ -21,7 +21,7 @@ class TestLLMInterpreter:
             event.set()
 
         pub.subscribe(on_message_received, LLMInterpreter.CHANNEL)
-        LLMInterpreter.report(100, 50, 25)
+        LLMInterpreter.report('Test', 100, 50, 25, 175)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

@@ -14,9 +14,12 @@ class LLMInterpreter:
     __TIMEOUT = 60  # In seconds
 
     @staticmethod
-    def report(energy_usage: float, generated_waste: float, business_travel_usage: float):
+    def report(company_name:str,
+               energy_usage: float,
+               generated_waste: float,
+               business_travel_usage: float,
+               total_usage:float):
         async def call():
-            total_usage = energy_usage + generated_waste + business_travel_usage
             prompt = [
                 {
                     "role": "system",
@@ -24,12 +27,13 @@ class LLMInterpreter:
                                " the user will give you data regarding the energy usages, generated wastes and business travels"
                                " for one year for a company in kgCO2 unit. You have to generate a report to"
                                " compare these numbers together and also help the company that in which ways can reduce these"
-                               " numbers to reduce carbon generation. you do not know anything about the company name"
-                               " and please avoid using place holders in your report. Try your best!"
+                               " numbers to reduce carbon generation. Mention the company name"
+                               " and please avoid using place holders in your report. You do not know anything"
+                               " about the company just its name and try to give general information. Try your best!"
                 },
                 {
                     "role": "user",
-                    "content": f"Here are the numbers for generating report, "
+                    "content": f"Here are the numbers for generating report, the company name is {company_name}, "
                                f"Energy Usage: {energy_usage}, percent: {(energy_usage * 100) / total_usage}"
                                f"Generated Waste: {generated_waste}, percent: {(generated_waste * 100) / total_usage}"
                                f"Business Travel Usage: {business_travel_usage}, percent: {(business_travel_usage * 100) / total_usage}"

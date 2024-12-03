@@ -60,6 +60,10 @@ pip install -r requirements/requirements_test.txt
 pytest
 ```
 
+The result of tests would be like the following image:
+
+<img src="docs/Test.png" alt="Example" height="300">
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).  
